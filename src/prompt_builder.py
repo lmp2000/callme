@@ -9,7 +9,9 @@ def build_prompt(
 
     for function in functions:
         parameters_lines: list[str] = []
-        for parameter_name, parameter_definition in function.parameters.items():
+        for parameter_name, parameter_definition in (
+            function.parameters.items()
+        ):
             parameters_lines.append(
                 f"- {parameter_name}: {parameter_definition.type}"
             )
@@ -25,11 +27,15 @@ def build_prompt(
     functions_text = "\n".join(function_blocks)
 
     final_prompt = (
-        "You are an AI assistant that selects the correct function for a user request.\n"
+        "You are an AI assistant that selects the correct function and "
+        "extracts its parameters from a user request.\n"
         "Available functions:\n"
         f"{functions_text}\n\n"
         "User request:\n"
-        f"{prompt.prompt}"
+        f"{prompt.prompt}\n\n"
+        "Return one JSON function call with exactly the keys name and "
+        "parameters.\n"
+        "Function call JSON:\n"
     )
 
     return final_prompt
