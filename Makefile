@@ -10,7 +10,7 @@ debug:
 	uv run python -m pdb -m src
 
 clean:
-	find src tests llm_sdk -type d -name __pycache__ -prune -exec rm -rf {} +
+	find src llm_sdk $(wildcard tests) -type d -name __pycache__ -prune -exec rm -rf {} +
 	rm -rf .mypy_cache .pytest_cache
 
 lint:
