@@ -4,30 +4,33 @@ from __future__ import annotations
 
 import json
 import math
-from dataclasses import dataclass
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any, cast
+
+from pydantic import BaseModel, ConfigDict
 
 from src.models import FunctionDefinition
 
 if TYPE_CHECKING:
-    from llm_sdk import Small_LLM_Model  # type: ignore[attr-defined]
+    from llm_sdk import Small_LLM_Model
 
 
 SUPPORTED_PARAMETER_TYPES = {"string", "integer", "number", "boolean"}
 
 
-@dataclass(frozen=True)
-class _CompiledParameter:
+class _CompiledParameter(BaseModel):
     """Precomputed fixed prefix and type for one parameter."""
+
+    model_config = ConfigDict(frozen=True)
 
     prefix: str
     type: str
 
 
-@dataclass(frozen=True)
-class _CompiledFunction:
+class _CompiledFunction(BaseModel):
     """Fixed JSON fragments needed to match one function schema."""
+
+    model_config = ConfigDict(frozen=True)
 
     opening: str
     parameters: tuple[_CompiledParameter, ...]
@@ -229,6 +232,7 @@ def _consume_value(
     position: int,
     parameter_type: str,
 ) -> tuple[int, bool] | None:
+    """Consume a typed JSON value from a potentially partial string."""
     if parameter_type == "string":
         return _consume_string(text, position)
     if parameter_type == "boolean":
@@ -351,6 +355,7 @@ def get_allowed_token_ids(
 
 
 def _validate_functions(functions: list[FunctionDefinition]) -> None:
+    """Validate constraints required by the decoder grammar."""
     if not functions:
         raise ValueError("At least one function definition is required.")
 
@@ -371,6 +376,7 @@ def _validate_decoded_call(
     call: dict[str, Any],
     functions: list[FunctionDefinition],
 ) -> None:
+    """Validate a completed call against its selected function schema."""
     if list(call) != ["name", "parameters"]:
         raise RuntimeError("Decoded call has invalid top-level keys.")
 

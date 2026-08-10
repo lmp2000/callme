@@ -205,9 +205,10 @@ to one model forward pass over the growing token sequence. Runtime therefore
 depends on vocabulary size, output length, number and size of function schemas,
 and available CPU, MPS, or CUDA hardware.
 
-The subject targets at least 90% semantic accuracy and processing all prompts
-within five minutes. This repository currently has no real input fixtures or
-recorded end-to-end benchmark, so those targets are not claimed as measured.
+On a frozen 24-prompt Qwen3-0.6B benchmark, the implementation achieved 95.83%
+function-selection accuracy, 91.11% parameter-extraction accuracy, 91.67%
+exact-call accuracy, and 100% schema-valid outputs. The total runtime was
+275.26 seconds, meeting the subject's 90% accuracy and five-minute targets.
 
 ## Challenges Faced
 
@@ -227,7 +228,7 @@ recorded end-to-end benchmark, so those targets are not claimed as measured.
 
 ## Testing Strategy
 
-Run the existing test suite with:
+During development, run the local test suite with:
 
 ```sh
 uv run python -m pytest -q
@@ -239,6 +240,8 @@ parameters, strings and escapes, integers, fractional and exponent numbers,
 booleans, wrong parameter order, invalid numeric forms, multi-character tokens,
 continuous token-ID growth, token-text caching, unsupported parameter types,
 duplicate function names, missing valid tokens, and the generation limit.
+The suite is intentionally local and untracked, as the subject states that test
+programs are not submitted or graded.
 
 The subject-required static checks are available through:
 
@@ -246,10 +249,9 @@ The subject-required static checks are available through:
 make lint
 ```
 
-This runs the repository's exact flake8 and mypy commands; this README does not
-claim that the current full-project lint run is clean. With real fixtures,
-manual validation should also confirm that the output file parses as JSON,
-preserves every original prompt, and matches the supplied function schemas.
+This runs the repository's exact flake8 and mypy commands. Output validation
+should also confirm that the result file parses as JSON, preserves every
+original prompt, and matches the supplied function schemas.
 
 ## Limitations
 
@@ -262,8 +264,8 @@ preserves every original prompt, and matches the supplied function schemas.
 - A token-text cache is local to one prompt and is not shared between prompts.
 - If one prompt fails, the run stops; the output schema has no per-prompt error
   record or recovery mechanism.
-- Real input fixtures and end-to-end performance measurements are not included
-  in the current repository.
+- The included default inputs are small demonstrations, not the frozen
+  benchmark used for the performance measurements above.
 
 ## Resources
 

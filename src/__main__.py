@@ -44,7 +44,7 @@ def main() -> None:
         functions = load_function_definitions(args.functions_definition)
         prompts = load_prompts(args.input)
 
-        from llm_sdk import Small_LLM_Model  # type: ignore[attr-defined]
+        from llm_sdk import Small_LLM_Model
 
         model = Small_LLM_Model()
 

@@ -5,6 +5,7 @@ def build_prompt(
     functions: list[FunctionDefinition],
     prompt: PromptInput,
 ) -> str:
+    """Build the model prompt from function definitions and a request."""
     function_blocks: list[str] = []
 
     for function in functions:
@@ -33,6 +34,9 @@ def build_prompt(
         f"{functions_text}\n\n"
         "User request:\n"
         f"{prompt.prompt}\n\n"
+        "Copy string parameter values exactly from the user request, "
+        "excluding surrounding quotes and punctuation that are not part "
+        "of the value.\n"
         "Return one JSON function call with exactly the keys name and "
         "parameters.\n"
         "Function call JSON:\n"

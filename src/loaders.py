@@ -7,6 +7,7 @@ from src.models import FunctionDefinition, PromptInput
 
 
 def load_function_definitions(path: Path) -> list[FunctionDefinition]:
+    """Load and validate function definitions from a JSON file."""
     with path.open("r", encoding="utf-8") as file:
         data = json.load(file)
     try:
@@ -19,6 +20,7 @@ def load_function_definitions(path: Path) -> list[FunctionDefinition]:
 
 
 def load_prompts(path: Path) -> list[PromptInput]:
+    """Load and validate prompt records from a JSON file."""
     with path.open("r", encoding="utf-8") as file:
         data = json.load(file)
     try:

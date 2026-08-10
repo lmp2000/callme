@@ -24,3 +24,16 @@ members = [
 
 [tool.uv.sources]
 llm-sdk = { workspace = true, editable = true }
+
+[tool.mypy]
+exclude = [
+    "^\\.venv/",
+    "^llm_sdk/",
+]
+
+[[tool.mypy.overrides]]
+module = ["llm_sdk", "llm_sdk.*"]
+follow_imports = "skip"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
