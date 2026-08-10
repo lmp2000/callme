@@ -331,29 +331,6 @@ def _get_allowed_token_ids(
     return allowed_ids
 
 
-def get_allowed_token_ids(
-    functions: list[FunctionDefinition],
-    generated_text: str,
-    model: Small_LLM_Model,
-    vocabulary_size: int,
-    token_text_cache: dict[int, str] | None = None,
-) -> list[int]:
-    """Return token IDs whose decoded text preserves a valid prefix."""
-    cache = token_text_cache if token_text_cache is not None else {}
-    compiled_functions = tuple(
-        function
-        for function in _compile_functions(functions)
-        if _match_function_prefix(generated_text, function)[0]
-    )
-    return _get_allowed_token_ids(
-        compiled_functions,
-        generated_text,
-        model,
-        vocabulary_size,
-        cache,
-    )
-
-
 def _validate_functions(functions: list[FunctionDefinition]) -> None:
     """Validate constraints required by the decoder grammar."""
     if not functions:
