@@ -19,8 +19,7 @@ with Pydantic models.
 
 ### Requirements
 
-- Python 3.12 or newer. This is stricter than the subject's Python 3.10
-  minimum because it matches `pyproject.toml`.
+- Python 3.10 or newer, matching both the subject and `pyproject.toml`.
 - [uv](https://docs.astral.sh/uv/) for dependency management.
 - `make` when using the convenience targets.
 - Internet access on the first run if Qwen3-0.6B is not already cached.
